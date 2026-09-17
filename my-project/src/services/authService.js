@@ -1,0 +1,39 @@
+//autenticação
+//Login, criar e logout
+
+import {apiFetch} from './api';
+
+export const authService = {
+    login: async (email, password) => {
+
+        const data = await apiFetch(API_URL, '/login', 'POST', { email, senha: password });
+
+        const token = data?.token;
+        if(token) {
+            localStorage.setItem('token', token);
+        }
+
+        return data;
+    },
+
+    signup: async (nome,email, password) => {
+        const data = await apiFetch(API_URL, '/usuarios', 'POST',{
+            nome: name,
+            email: email,
+            senha: password,
+            tipo_acesso: 'Default'
+        })
+
+        const token = data?.token;
+
+        if(token){
+            localStorage.setItem('token', token);
+        }
+
+        return data;
+    },
+
+    logout: () => {
+        localStorage.removeItem('token');
+    },
+};
